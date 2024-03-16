@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
     /**
      * 存放 bean的容器
      */
-    private Map<Class<?>, Object> beanFactory = new HashMap<>();
+    private final Map<Class<?>, Object> beanFactory = new HashMap<>();
 
     /**
      * 构造方法：需要读取一个扫描路径配置类
@@ -35,7 +36,7 @@ public class AnnotationConfigApplicationContext implements ApplicationContext {
                 Enumeration<URL> dirs = Thread.currentThread().getContextClassLoader().getResources(path);
                 while (dirs.hasMoreElements()) {
                     URL url = dirs.nextElement();
-                    String filePath = URLDecoder.decode(url.getFile(),"utf-8");
+                    String filePath = URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8);
                     File folder = new File(filePath);
                     if (!folder.isDirectory()) {
                         throw new RuntimeException("扫描路径错误");
